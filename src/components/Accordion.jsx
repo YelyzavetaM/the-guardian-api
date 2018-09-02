@@ -3,6 +3,8 @@ import { API } from "../api/API";
 import { PanelGroup, Pager } from "react-bootstrap";
 import AccordionItem from "./AccordionItem";
 
+import "./Accordion.css";
+
 class Accordion extends Component {
   state = {
     items: [],
@@ -56,24 +58,30 @@ class Accordion extends Component {
     let { items } = this.state;
 
     return (
-      <div className="accordion-container">
-        <h1>The Guardian News</h1>
-        <button onClick={this.handleClick}>Refresh</button>
-        <PanelGroup accordion id="accordion-example">
-          {items.map((item, index) => (
-            <AccordionItem
-              key={item.id}
-              eventKey={index}
-              title={item.webTitle}
-              body={this.handleReadMore(
-                item.blocks.body[0].bodyTextSummary,
-                item.webUrl
-              )}
-            />
-          ))}
-        </PanelGroup>
+      <div className="main">
+        <div className="head-wrap">
+          <h1 className="title">The Guardian News</h1>
+          <button className="btn" onClick={this.handleClick}>
+            Refresh
+          </button>
+        </div>
+        <div className="accordion-container">
+          <PanelGroup accordion id="accordion-example">
+            {items.map((item, index) => (
+              <AccordionItem
+                key={item.id}
+                eventKey={index}
+                title={item.webTitle}
+                body={this.handleReadMore(
+                  item.blocks.body[0].bodyTextSummary,
+                  item.webUrl
+                )}
+              />
+            ))}
+          </PanelGroup>
+        </div>
 
-        <div>
+        <div className="footer-wrap">
           <Pager>
             {this.state.currentPage === 1 ? (
               <Pager.Item previous href="#" disabled>
@@ -88,9 +96,15 @@ class Accordion extends Component {
               {this.state.currentPage} of {this.state.totalPages} pages
             </Pager.Item>
 
-            <Pager.Item next href="#" onClick={this.handleNextPage}>
-              Next Page &rarr;
-            </Pager.Item>
+            {this.state.currentPage === this.state.totalPages ? (
+              <Pager.Item next href="#" disabled>
+                &larr; Previous Page
+              </Pager.Item>
+            ) : (
+              <Pager.Item next href="#" onClick={this.handleNextPage}>
+                Next Page &rarr;
+              </Pager.Item>
+            )}
           </Pager>
         </div>
       </div>
