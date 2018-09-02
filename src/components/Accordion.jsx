@@ -1,25 +1,27 @@
 import React, { Component } from "react";
 import { API } from "../api/API";
-import { PanelGroup } from "react-bootstrap";
+import { PanelGroup, Pager } from "react-bootstrap";
 import AccordionItem from "./AccordionItem";
 
 class Accordion extends Component {
   state = {
-    items: []
+    items: [],
+    currentPage: 1
   };
 
   componentDidMount() {
-    API.get()
+    API.get(this.state.currentPage)
       .then(r => r.json())
       .then(data => {
         this.setState({
-          items: data.response.results
+          items: data.response.results,
+          totalPages: data.response.pages
         });
       });
   }
 
   handleClick = e => {
-    e.preventDefault();
+    // e.preventDefault();
     this.componentDidMount();
   };
 
@@ -29,6 +31,24 @@ class Accordion extends Component {
         <p>{text}</p>
         <a href={link}>Read more...</a>
       </div>
+    );
+  };
+
+  handleNextPage = () => {
+    this.setState(
+      {
+        currentPage: this.state.currentPage + 1
+      },
+      this.handleClick
+    );
+  };
+
+  handlePrevPage = () => {
+    this.setState(
+      {
+        currentPage: this.state.currentPage - 1
+      },
+      this.handleClick
     );
   };
 
@@ -52,6 +72,27 @@ class Accordion extends Component {
             />
           ))}
         </PanelGroup>
+
+        <div>
+          <Pager>
+            {this.state.currentPage === 1 ? (
+              <Pager.Item previous href="#" disabled>
+                &larr; Previous Page
+              </Pager.Item>
+            ) : (
+              <Pager.Item previous href="#" onClick={this.handlePrevPage}>
+                &larr; Previous Page
+              </Pager.Item>
+            )}
+            <Pager.Item href="#">
+              {this.state.currentPage} of {this.state.totalPages} pages
+            </Pager.Item>
+
+            <Pager.Item next href="#" onClick={this.handleNextPage}>
+              Next Page &rarr;
+            </Pager.Item>
+          </Pager>
+        </div>
       </div>
     );
   }
