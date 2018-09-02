@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./App.css";
 import Accordion from "./components/Accordion";
 import Error from "./components/Error";
 
@@ -17,7 +16,7 @@ class App extends Component {
       return <Error />;
     }
     return (
-      <div className="App">
+      <div className="App" style={{ margin: "20px" }}>
         <Accordion />
       </div>
     );

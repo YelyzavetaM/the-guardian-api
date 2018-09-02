@@ -55,7 +55,7 @@ class Accordion extends Component {
   };
 
   render() {
-    let { items } = this.state;
+    let { items, currentPage, totalPages } = this.state;
 
     return (
       <div className="main">
@@ -83,7 +83,7 @@ class Accordion extends Component {
 
         <div className="footer-wrap">
           <Pager>
-            {this.state.currentPage === 1 ? (
+            {currentPage === 1 ? (
               <Pager.Item previous href="#" disabled>
                 &larr; Previous Page
               </Pager.Item>
@@ -93,10 +93,10 @@ class Accordion extends Component {
               </Pager.Item>
             )}
             <Pager.Item href="#">
-              {this.state.currentPage} of {this.state.totalPages} pages
+              {currentPage} of {totalPages} pages
             </Pager.Item>
 
-            {this.state.currentPage === this.state.totalPages ? (
+            {currentPage === totalPages ? (
               <Pager.Item next href="#" disabled>
                 &larr; Previous Page
               </Pager.Item>
